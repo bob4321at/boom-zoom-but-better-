@@ -4,10 +4,12 @@ var getExistingRoomName = document.getElementById("existing roomname");
 
 function makeRoom() {
   let name = getNewRoomName.value;
+  let username = getUsername.value;
+  sessionStorage.setItem("username", username)
   sessionStorage.setItem("lobby", name)
   fetch("/makeRoom", {
     "method": "POST",
-    "body": JSON.stringify({"Name": name, "Users": 1}),
+    "body": JSON.stringify({"Name": name, "Users": 1, "Messeges": []}),
   })
   window.location.href = "/game"
 }
@@ -21,12 +23,12 @@ async function joinRoom() {
   let json = await room.json()
 
   if (json.Error == "incorrect lobby name") {
-    alert("invalid lobby name")
+    window.location.href = "/error?error=incorrect lobby name"
     return
   }
 
   if (json.Users > 1) {
-    alert("lobby full")
+    window.location.href = "/error?error=lobby full"
     return
   }
   console.log(json.Users)

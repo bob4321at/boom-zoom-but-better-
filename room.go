@@ -10,9 +10,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Messege struct {
+	Username string
+	Content  string
+}
+
+func sendMessege(c *gin.Context) {
+	user := c.Query("user")
+	messege := c.Query("messege")
+
+	for ri := 0; ri < len(rooms); ri++ {
+		if rooms[ri].Name == c.Query("name") {
+			room := &rooms[ri]
+			room.Messeges = append(room.Messeges, Messege{Username: user, Content: messege})
+			fmt.Println(room)
+			return
+		}
+	}
+}
+
 type Room struct {
-	Name  string
-	Users int
+	Name     string
+	Users    int
+	Messeges []Messege
 }
 
 func makeRoom(c *gin.Context) {

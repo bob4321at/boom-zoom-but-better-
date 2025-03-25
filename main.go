@@ -20,10 +20,12 @@ func main() {
 	r.StaticFile("/mainjs", "./templates/main/mainjs.js")
 
 	r.GET("/game", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "main.tmpl", gin.H{
-			"title":   "Game Room",
-			"message": "Welcome to the new game!",
-		})
+		c.HTML(http.StatusOK, "main.tmpl", nil)
+	})
+
+	r.GET("/error", func(c *gin.Context) {
+		error := c.Query("error")
+		c.HTML(http.StatusOK, "error.tmpl", gin.H{"error": error})
 	})
 
 	r.GET("/", func(c *gin.Context) {
@@ -34,6 +36,7 @@ func main() {
 	r.GET("/getRoom", getRoom)
 	r.GET("/addUserToRoom", addUserToRoom)
 	r.GET("/removeUserFromRoom", removeUserFromRoom)
+	r.GET("/sendMessege", sendMessege)
 
 	r.Run()
 }
